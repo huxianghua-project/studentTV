@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>童学大屏</title>
     <script>
-      // 老电视 WebView（Chrome<71）没有 globalThis，必须在所有应用脚本之前补上
       if (typeof globalThis === 'undefined') { window.globalThis = window; }
     </script>
     <script>
-      // ── 多屏自适应：按屏幕宽度等比缩放根字号 ─────────────────────────────
-      // 设计稿基准 1920px（电视）。平板（>=768px）按比例缩小整个 UI，恰好一屏放下；
-      // 手机（<768px）保持原字号，靠页面滚动 + 窄屏布局使用。
       (function () {
         function fit() {
           var w = window.innerWidth;
           var ratio = w / 1920;
           var base = 16;
           if (w >= 768) {
-            base = 16 * Math.max(ratio, 0.42); // 平板最窄约 768px → 0.42 下限
+            base = 16 * Math.max(ratio, 0.42);
           }
           document.documentElement.style.fontSize = base + 'px';
         }
@@ -27,7 +23,6 @@
       })();
     </script>
     <script>
-      // 非模块的兜底脚本：旧 WebView 也能运行，把错误显示出来而不是白屏
       (function () {
         function showErr(msg) {
           var r = document.getElementById('root');
@@ -45,7 +40,6 @@
         window.addEventListener('unhandledrejection', function (e) {
           showErr('Promise 错误: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
         });
-        // 10 秒后仍未出现应用内容（root 里还是"正在加载"），才提示真没启动
         setTimeout(function () {
           var r = document.getElementById('root');
           if (r && r.innerHTML.indexOf('正在加载') !== -1) {
@@ -54,7 +48,6 @@
         }, 10000);
       })();
     </script>
-    
   </head>
   <body>
     <div id="root" data-boot="1" style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;color:#666">
@@ -63,7 +56,7 @@
         <div style="margin-top:16px;font-size:20px">正在加载，请稍候…</div>
       </div>
     </div>
-    <script crossorigin id="vite-legacy-polyfill" src="./assets/polyfills-legacy-ZyyRnype.js"></script>
-    <script crossorigin id="vite-legacy-entry" data-src="./assets/index-legacy-Cm2ov2Ro.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+    <script crossorigin id="vite-legacy-polyfill" src="./polyfills-legacy-ZyyRnype.js"></script>
+    <script crossorigin id="vite-legacy-entry" data-src="./index-legacy-Cm2ov2Ro.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
   </body>
 </html>
